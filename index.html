@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    button {
+        width: 200px;
+        height: 200px;
+        font-size: 150px;
+        margin: 3px;
+        background-color: rgb(46, 161, 161);
+        border: solid 2px rgb(0, 107, 123);
+        border-radius: 15px;
+    }
+
+    #obenMitte, #mitteRechts, #mitteLinks, #untenMitte{
+        background-color: rgb(57, 212, 212);
+    }
+
+    #div1 {
+        display: none;
+    }
+    
+    #bb{
+        width: 100px;
+        height: 40px;
+        font-size: 15px;
+        margin: 3px;
+    }
+
+    #bb2{
+        width: 100px;
+        height: 40px;
+        font-size: 15px;
+        margin: 3px;
+        display: none;
+    }
+
+    body {
+        background-color: rgb(23, 145, 145); 
+    }
+    </style>
+
+<body>
+    <div id="buttons">
+        <button id="obenLinks" onclick="start('obenLinks')"> </button>
+        <button id="obenMitte" onclick="start('obenMitte')"> </button>
+        <button id="obenRechts" onclick="start('obenRechts')"> </button>
+        <br>
+        <button id="mitteLinks" onclick="start('mitteLinks')"> </button>
+        <button id="mitteMitte" onclick="start('mitteMitte')"> </button>
+        <button id="mitteRechts" onclick="start('mitteRechts')"> </button>
+        <br>
+        <button id="untenLinks" onclick="start('untenLinks')"> </button>
+        <button id="untenMitte" onclick="start('untenMitte')"> </button>
+        <button id="untenRechts" onclick="start('untenRechts')"> </button>
+    </div>
+
+    <br>
+    <p id="p">X ist dran.</p>
+    <br>
+    <button id="bb2" onclick="neustarten()">🔃Neustart</button>
+    <hr>
+    <div id="div1">
+    <input type="file" id="bild" accept="image/*">
+    <button onclick="hbild();" id="bb">Hintergrund benutzen!</button>
+    </div>
+
+    
+
+    <script>
+        let xIst = true;
+        let winner = '?';
+        let buttonDiv = document.getElementById('buttons');
+        let neustart = document.getElementById('bb2');
+
+        function hbild() {
+            let newbild = document.getElementById('bild');
+            document.body.style.backgroundImage.src = 'url(D:/MYcode/img/' + newbild + ')'; 
+            alert('Der Hintergrund wurde geändert!');
+        }
+
+        function start(buttonId) {
+            let button = document.getElementById(buttonId);
+            let p = document.getElementById("p");
+            
+            if (xIst === true) {
+                button.textContent = 'x';
+                xIst = false;
+                p.textContent = "O ist dran.";
+            } else if (xIst === false) {
+                button.textContent = 'o';
+                xIst = true;
+                p.textContent = "X ist dran.";
+            }
+
+            checkWinner();
+            button.disabled = true;
+        }
+
+        function checkWinner() {
+            // Horizontale Überprüfung
+            checkLine('obenLinks', 'obenMitte', 'obenRechts');
+            checkLine('mitteLinks', 'mitteMitte', 'mitteRechts');
+            checkLine('untenLinks', 'untenMitte', 'untenRechts');
+
+            // Vertikale Überprüfung
+            checkLine('obenLinks', 'mitteLinks', 'untenLinks');
+            checkLine('obenMitte', 'mitteMitte', 'untenMitte');
+            checkLine('obenRechts', 'mitteRechts', 'untenRechts');
+
+            // Diagonale Überprüfung
+            checkLine('obenLinks', 'mitteMitte', 'untenRechts');
+            checkLine('obenRechts', 'mitteMitte', 'untenLinks');
+
+            checkObAllAusgefüllt('obenLinks', 'obenMitte', 'obenRechts', 'mitteLinks', 'mitteMitte', 'mitteRechts', 'untenLinks', 'untenMitte', 'untenRechts');
+        }
+
+        function checkLine(id1, id2, id3) {
+            let button1 = document.getElementById(id1);
+            let button2 = document.getElementById(id2);
+            let button3 = document.getElementById(id3);
+
+            if (button1.textContent === 'x' && button2.textContent === 'x' && button3.textContent === 'x') {
+                winner = 'X';
+                setWinnerStyle(button1, button2, button3);
+                buttonDiv.querySelectorAll('button').forEach(button => {
+                    button.disabled = true;
+                });
+
+                neustart.style.display = "block";
+
+            } else if (button1.textContent === 'o' && button2.textContent === 'o' && button3.textContent === 'o') {
+                winner = 'O';
+                setWinnerStyle(button1, button2, button3);
+                buttonDiv.querySelectorAll('button').forEach(button => {
+                    button.disabled = true;
+                });
+
+                neustart.style.display = "block";
+                                
+            }
+            
+        }
+
+        function setWinnerStyle(button1, button2, button3) {
+            // Setze die Schriftfarbe auf rot für die Gewinnerbuttons
+            button1.style.color = 'red';
+            button2.style.color = 'red';
+            button3.style.color = 'red';
+
+            alert(winner + ' hat gewonnen!');
+
+        }
+
+        function checkObAllAusgefüllt(id1, id2, id3, id4, id5,id6, id7, id8, id9) {
+            let button1 = document.getElementById(id1);
+            let button2 = document.getElementById(id2);
+            let button3 = document.getElementById(id3);
+            let button4 = document.getElementById(id4);
+            let button5 = document.getElementById(id5);
+            let button6 = document.getElementById(id6);
+            let button7 = document.getElementById(id7);
+            let button8 = document.getElementById(id8);
+            let button9 = document.getElementById(id9);
+
+            if(button1.disabled === true && button2.disabled === true && button3.disabled === true && button4.disabled === true && button5.disabled === true && button6.disabled === true &&  button7.disabled === true &&  button8.disabled === true &&  button9.disabled === true) {
+                neustart.style.display = "block";
+            }
+        }
+
+        function neustarten() {
+            alert('Neue Runde, neues Glück');
+            location.reload();
+        }
+    </script>
+</body>
+
+</html>
