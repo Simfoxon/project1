@@ -8,18 +8,35 @@
 </head>
 
 <style>
+
+    body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgb(0, 0, 0); 
+        justify-content: center;
+    }
     button {
         width: 200px;
         height: 200px;
         font-size: 150px;
         margin: 3px;
-        background-color: rgb(46, 161, 161);
-        border: solid 2px rgb(0, 107, 123);
+        background-color: rgb(196, 196, 196);
+        border: solid 2px rgb(96, 96, 96);
         border-radius: 15px;
+        color: rgb(196, 196, 196);
+    }
+
+    button:hover {
+        cursor: pointer;
+        scale: 1.04;
+        transition: all 0.2s;
     }
 
     #obenMitte, #mitteRechts, #mitteLinks, #untenMitte{
-        background-color: rgb(57, 212, 212);
+        background-color: rgb(152, 152, 152);
+        color: rgb(152, 152, 152);
     }
 
     #div1 {
@@ -34,42 +51,43 @@
     }
 
     #bb2{
-        width: 100px;
+        width: auto;
         height: 40px;
         font-size: 15px;
         margin: 3px;
-        display: none;
+        display: block;
+        font-weight: bold;
+        color: black; 
     }
 
-    body {
-        background-color: rgb(23, 145, 145); 
+    p {
+        font-size: 25px;
+        font-weight: bold;
+        color: rgb(196, 196, 196); 
+        margin: 10px;
     }
+
     </style>
 
 <body>
     <div id="buttons">
-        <button id="obenLinks" onclick="start('obenLinks')"> </button>
-        <button id="obenMitte" onclick="start('obenMitte')"> </button>
-        <button id="obenRechts" onclick="start('obenRechts')"> </button>
+        <button id="obenLinks" onclick="start('obenLinks')"> x</button>
+        <button id="obenMitte" onclick="start('obenMitte')"> x</button>
+        <button id="obenRechts" onclick="start('obenRechts')"> x</button>
         <br>
-        <button id="mitteLinks" onclick="start('mitteLinks')"> </button>
-        <button id="mitteMitte" onclick="start('mitteMitte')"> </button>
-        <button id="mitteRechts" onclick="start('mitteRechts')"> </button>
+        <button id="mitteLinks" onclick="start('mitteLinks')"> x</button>
+        <button id="mitteMitte" onclick="start('mitteMitte')"> x</button>
+        <button id="mitteRechts" onclick="start('mitteRechts')"> x</button>
         <br>
-        <button id="untenLinks" onclick="start('untenLinks')"> </button>
-        <button id="untenMitte" onclick="start('untenMitte')"> </button>
-        <button id="untenRechts" onclick="start('untenRechts')"> </button>
+        <button id="untenLinks" onclick="start('untenLinks')"> x</button>
+        <button id="untenMitte" onclick="start('untenMitte')"> x</button>
+        <button id="untenRechts" onclick="start('untenRechts')"> x</button>
     </div>
 
     <br>
     <p id="p">X ist dran.</p>
     <br>
-    <button id="bb2" onclick="neustarten()">🔃Neustart</button>
-    <hr>
-    <div id="div1">
-    <input type="file" id="bild" accept="image/*">
-    <button onclick="hbild();" id="bb">Hintergrund benutzen!</button>
-    </div>
+    <button id="bb2" onclick="neustarten()">Neustarten</button>
 
     
 
@@ -79,22 +97,18 @@
         let buttonDiv = document.getElementById('buttons');
         let neustart = document.getElementById('bb2');
 
-        function hbild() {
-            let newbild = document.getElementById('bild');
-            document.body.style.backgroundImage.src = 'url(D:/MYcode/img/' + newbild + ')'; 
-            alert('Der Hintergrund wurde geändert!');
-        }
-
         function start(buttonId) {
             let button = document.getElementById(buttonId);
             let p = document.getElementById("p");
             
             if (xIst === true) {
                 button.textContent = 'x';
+                button.style.color = 'black';
                 xIst = false;
                 p.textContent = "O ist dran.";
             } else if (xIst === false) {
                 button.textContent = 'o';
+                button.style.color = 'black';
                 xIst = true;
                 p.textContent = "X ist dran.";
             }
@@ -118,7 +132,6 @@
             checkLine('obenLinks', 'mitteMitte', 'untenRechts');
             checkLine('obenRechts', 'mitteMitte', 'untenLinks');
 
-            checkObAllAusgefüllt('obenLinks', 'obenMitte', 'obenRechts', 'mitteLinks', 'mitteMitte', 'mitteRechts', 'untenLinks', 'untenMitte', 'untenRechts');
         }
 
         function checkLine(id1, id2, id3) {
@@ -154,25 +167,10 @@
             button2.style.color = 'red';
             button3.style.color = 'red';
 
-            alert(winner + ' hat gewonnen!');
+            p.textContent = winner + ' hat gewonnen!';
 
         }
 
-        function checkObAllAusgefüllt(id1, id2, id3, id4, id5,id6, id7, id8, id9) {
-            let button1 = document.getElementById(id1);
-            let button2 = document.getElementById(id2);
-            let button3 = document.getElementById(id3);
-            let button4 = document.getElementById(id4);
-            let button5 = document.getElementById(id5);
-            let button6 = document.getElementById(id6);
-            let button7 = document.getElementById(id7);
-            let button8 = document.getElementById(id8);
-            let button9 = document.getElementById(id9);
-
-            if(button1.disabled === true && button2.disabled === true && button3.disabled === true && button4.disabled === true && button5.disabled === true && button6.disabled === true &&  button7.disabled === true &&  button8.disabled === true &&  button9.disabled === true) {
-                neustart.style.display = "block";
-            }
-        }
 
         function neustarten() {
             alert('Neue Runde, neues Glück');
